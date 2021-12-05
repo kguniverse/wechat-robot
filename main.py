@@ -9,9 +9,9 @@ import receive, reply
 app = FastAPI()
 
 
-# handler
+# handler chat
 @app.post("/wx")
-async def handler(rq: Request):
+async def chatHandler(rq: Request):
     try:
         webData = await rq.body()
         print ("Handle Post webdata is ", webData)
@@ -27,6 +27,12 @@ async def handler(rq: Request):
             return PlainTextResponse("success")
     except Exception as ep:
         return ep.args
+
+
+# handler config
+@app.post("/config")
+async def configHandler():
+    pass
 
 if __name__ == '__main__':
     uvicorn.run(app)

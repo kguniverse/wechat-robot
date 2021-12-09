@@ -23,13 +23,12 @@ server {
 ## example
 
 ```
-step welcome
-PRINT "hello"
-WAIT 5 10
-BRANCH "作业" hwProc
-BRANCH "课程信息" CourseInfoProc
-BRANCH "
-end welcome
+
+step Proc:welcome 
+BRANCH homework Proc:hw 
+BRANCH CourseInfo Proc:CourseInfo 
+end
+
 ```
 
 BNF:
@@ -40,7 +39,7 @@ steps       := begin detail end {validate begin.name == end.name}
 
 begin       := "step" stepname {begin.name = stepname.name}
 
-stepname    := \[((a~z) + (A~Z))+\] "Proc"
+stepname    := \[((a\~z) + (A\~Z))+\] "Proc"
 
 detail      := function branchInput stepname {if stepname doesn't 
 exsist, build one} 

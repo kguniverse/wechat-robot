@@ -15,8 +15,8 @@ def stepCheck(s: str, loc: int, tokens: ParseResults):
     pass
 
 def stepBranch(s: str, loc: int, tokens: ParseResults):
-    if len(fatherNode.steps) == 0 or fatherNode.steps[-1] != "BRANCH":
-        fatherNode.steps.append("BRANCH")
+    # if len(fatherNode.steps) == 0 or fatherNode.steps[-1] != "BRANCH":
+    #     fatherNode.steps.append("BRANCH")
     condition = tokens.get("condition")
     stepName = tokens.get("sonName")
     fatherNode.addNode(stepName, condition)
@@ -24,12 +24,12 @@ def stepBranch(s: str, loc: int, tokens: ParseResults):
 
 def stepWait(s: str, loc: int, tokens: ParseResults):
     wait_time = int(tokens.get("wait_time"))
-    fatherNode.steps.append("WAIT" + str(wait_time))
+    fatherNode.steps.append("WAIT " + str(wait_time))
     pass
     
 def stepPrint(s: str, loc: int, tokens: ParseResults):
-    print_str:str = tokens.get("print_step")
-    fatherNode.steps.append("PRINT" + print_str)
+    print_str:str = tokens.get("print_str")
+    fatherNode.steps.append("PRINT " + print_str)
     pass
 
 
@@ -39,7 +39,7 @@ branchInput = Word(alphas)
 branch_detail = ("BRANCH" + branchInput.setResultsName("condition") + stepName.setResultsName("sonName")).setParseAction(stepBranch)
 wait_detail = ("WAIT" + Word(nums).setResultsName("wait_time")).setParseAction(stepWait)
 print_detail = ("PRINT" + Word(alphanums).setResultsName("print_str")).setParseAction(stepPrint)
-detail = branch_detail | wait_detail
+detail = branch_detail | wait_detail | print_detail
 begin = ("step" + stepName.setResultsName("fatherName")).setParseAction(stepCheck)
 end = Literal("end") + Literal("step")
 step = begin + OneOrMore(detail) + end

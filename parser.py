@@ -23,14 +23,23 @@ def stepBranch(s: str, loc: int, tokens: ParseResults):
     pass
 
 def stepWait(s: str, loc: int, tokens: ParseResults):
+    wait_time = int(tokens.get("wait_time"))
+    fatherNode.steps.append("WAIT" + str(wait_time))
     pass
     
+def stepPrint(s: str, loc: int, tokens: ParseResults):
+    print_str:str = tokens.get("print_step")
+    fatherNode.steps.append("PRINT" + print_str)
+    pass
+
+
 stepName = Combine("Proc:" + Word(alphas))
 # func = Word(srange("[A-Z]")).setResultsName("funcName")
 branchInput = Word(alphas)
 branch_detail = ("BRANCH" + branchInput.setResultsName("condition") + stepName.setResultsName("sonName")).setParseAction(stepBranch)
-wait_detail = ("WAIT" + Word(nums) + Word(nums)).setParseAction(stepWait)
-detail = branch_detail
+wait_detail = ("WAIT" + Word(nums).setResultsName("wait_time")).setParseAction(stepWait)
+print_detail = ("PRINT" + Word(alphanums).setResultsName("print_str")).setParseAction(stepPrint)
+detail = branch_detail | wait_detail
 begin = ("step" + stepName.setResultsName("fatherName")).setParseAction(stepCheck)
 end = Literal("end") + Literal("step")
 step = begin + OneOrMore(detail) + end

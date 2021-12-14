@@ -8,7 +8,7 @@
 ## 配置
 
 nginx:
-
+(转发微信公众号的post请求)
 ```
 server {
     listen       80;
@@ -23,28 +23,32 @@ server {
 ## example
 
 ```
-
-step Proc:welcome 
-BRANCH homework Proc:hw 
-BRANCH CourseInfo Proc:CourseInfo 
-end
-
+step Proc:welcome
+PRINT hello
+BRANCH homework Proc:hw
+BRANCH CourseInfo Proc:CourseInfo
+end step
+step Proc:hw
+WAIT 5
+BRANCH homework Proc:hw
+BRANCH CourseInfo Proc:CourseInfo
+end step
 ```
 
 BNF:
 
-instruction := steps*
+$$instruction := steps*$$
 
-steps       := begin detail end {validate begin.name == end.name}
+$$steps       := begin detail end \{validate begin.name == end.name\}$$
 
-begin       := "step" stepname {begin.name = stepname.name}
+$$begin       := "step" stepname \{begin.name = stepname.name\}$$
 
-stepname    := \[((a\~z) + (A\~Z))+\] "Proc"
+$$stepname    := [((a~z) + (A~Z))+] "Proc"$$
 
-detail      := function branchInput stepname {if stepname doesn't 
-exsist, build one} 
-end         := "end" stepname {end.name = stepname.name}
+$$detail      := function branchInput stepname \{if stepname doesn't exsist, build one\} $$
 
-function    := \[A~Z\]+
+$$end         := "end" stepname \{end.name = stepname.name\}$$
 
-branchInput := " string "
+$$function    := [A~Z]+$$
+
+$$branchInput := " string "$$

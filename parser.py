@@ -7,6 +7,7 @@ fatherNode = stepNode("no name")
 condition = ""
 
 def stepCheck(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
     stepName = tokens.get("fatherName")
     fatherNode = stepMap.get(stepName, None)
     if  fatherNode is None:
@@ -15,6 +16,7 @@ def stepCheck(s: str, loc: int, tokens: ParseResults):
     pass
 
 def stepBranch(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
     # if len(fatherNode.steps) == 0 or fatherNode.steps[-1] != "BRANCH":
     #     fatherNode.steps.append("BRANCH")
     condition = tokens.get("condition")
@@ -23,11 +25,13 @@ def stepBranch(s: str, loc: int, tokens: ParseResults):
     pass
 
 def stepWait(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
     wait_time = int(tokens.get("wait_time"))
     fatherNode.steps.append("WAIT " + str(wait_time))
     pass
     
 def stepPrint(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
     print_str:str = tokens.get("print_str")
     fatherNode.steps.append("PRINT " + print_str)
     pass

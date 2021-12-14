@@ -1,16 +1,19 @@
+import hashlib
+from parser import parse
 from typing import Text
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse
+from interpreter import interpreter
 
-import hashlib
-import uvicorn
-import receive, reply
-from parser import parse
+import receive
+import reply
 
 app = FastAPI()
 
 
-# handler chat
+# handler message
 @app.post("/wx")
 async def chatHandler(rq: Request):
     try:
@@ -20,10 +23,7 @@ async def chatHandler(rq: Request):
         if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
             toUser = recMsg.FromUserName
             fromUser = recMsg.ToUserName
-            # if bytes.decode(recMsg.Content) == '王乾凱是傻子':
-            content = "张裕是傻子"
-            # else:
-            content = bytes.decode(recMsg.Content)
+            content = interpreter(bytes.decode(recMsg.Content))
             replyMsg = reply.TextMsg(toUser, fromUser, content)
             return PlainTextResponse(replyMsg.send())
         else:
@@ -41,7 +41,7 @@ async def configHandler(rq: Request):
     print("config shell is", webStr)
     parse(str(webStr))
     return PlainTextResponse("parse success")
-    pass
 
+# for debug
 if __name__ == '__main__':
     uvicorn.run(app)

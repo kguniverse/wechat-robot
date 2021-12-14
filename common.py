@@ -1,11 +1,10 @@
 stepMap = {}
 
 class stepNode:
-    steps = []
-    next = {}
-    name:str
     def __init__(self, name:str):
         self.name = name
+        self.steps = []
+        self.next = {}
     
     def addNode(self, stepName: str, condition: str):
         newNode = stepMap.get(stepName, None)

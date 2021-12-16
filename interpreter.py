@@ -1,18 +1,20 @@
 from common import *
 
-now = stepMap.get('Proc:welcome')
+now:stepNode = stepMap.get('Proc:welcome')
 
 def interpreter(message:str):
+    global dic
     global now
     now = stepMap.get('Proc:welcome')
     if message == 'begin':
         pass
     else:
-        now = now.next.get(message)
+        now = now.next.get(message, now.default)
     for step in now.steps:
             actions = str(step).split()
             if actions[0] == 'WAIT':
                 second = int(actions[1])
             elif actions[0] == 'PRINT':
-                mess = str(actions[1])
+                mess = dic.get(str(actions[1]))
+    now = now.goto
     return mess

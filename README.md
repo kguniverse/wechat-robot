@@ -1,5 +1,9 @@
 # 程序设计实践作业
 
+## 运行截图
+
+![1](asset/docs/IMG_0412.PNG)
+
 ## 解析器
 
 框架：pyparsing
@@ -37,18 +41,18 @@ end step
 
 BNF:
 
-$$instruction := steps*$$
+instruction := steps*
 
-$$steps       := begin detail end \{validate begin.name == end.name\}$$
+steps       := begin detail end {validate begin.name == end.name}
 
-$$begin       := "step" stepname \{begin.name = stepname.name\}$$
+begin       := "step" stepname {begin.name = stepname.name}
 
-$$stepname    := [((a~z) + (A~Z))+] "Proc"$$
+stepname    := [((a~z) + (A~Z))+] "Proc"
 
-$$detail      := function branchInput stepname \{if stepname doesn't exsist, build one\} $$
+detail      := function branchInput stepname {if stepname doesn't exsist, build one} 
 
-$$end         := "end" stepname \{end.name = stepname.name\}$$
+end         := "end" stepname {end.name = stepname.name}
 
-$$function    := [A~Z]+$$
+function    := \[A~Z]+
 
-$$branchInput := " string "$$
+branchInput := " string "

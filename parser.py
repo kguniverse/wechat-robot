@@ -6,6 +6,7 @@ from common import stepNode, stepMap
 fatherNode = stepNode("no name")
 condition = ""
 
+#parse father step
 def stepCheck(s: str, loc: int, tokens: ParseResults):
     global fatherNode
     stepName = tokens.get("fatherName")
@@ -36,19 +37,32 @@ def stepPrint(s: str, loc: int, tokens: ParseResults):
     fatherNode.steps.append("PRINT " + print_str)
     pass
 
+def stepDefault(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
+    stepName = tokens.get("sonName")
+    fatherNode.addDefault(stepName)
+    pass
+
+def stepGoto(s: str, loc: int, tokens: ParseResults):
+    global fatherNode
+    stepName = tokens.get("sonName")
+    fatherNode.addGoto(stepName)
+    pass
+    
+
 
 stepName = Combine("Proc:" + Word(alphas))
-# func = Word(srange("[A-Z]")).setResultsName("funcName")
 branchInput = Word(alphas)
 branch_detail = ("BRANCH" + branchInput.setResultsName("condition") + stepName.setResultsName("sonName")).setParseAction(stepBranch)
 wait_detail = ("WAIT" + Word(nums).setResultsName("wait_time")).setParseAction(stepWait)
 print_detail = ("PRINT" + Word(alphanums).setResultsName("print_str")).setParseAction(stepPrint)
-detail = branch_detail | wait_detail | print_detail
+default_detail = ("DEFAULT" + stepName.setResultsName("sonName")).setParseAction(stepDefault)
+goto_detail = ("GOTO" + stepName.setResultsName("sonName")).setParseAction(stepGoto)
+detail = branch_detail | wait_detail | print_detail | default_detail | goto_detail
 begin = ("step" + stepName.setResultsName("fatherName")).setParseAction(stepCheck)
 end = Literal("end") + Literal("step")
 step = begin + OneOrMore(detail) + end
 instruction = OneOrMore(step)
-
 
 def parse(shell: str):
     return instruction.parse_string(shell)

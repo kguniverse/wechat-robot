@@ -23,7 +23,7 @@ async def chatHandler(rq: Request):
         if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
             toUser = recMsg.FromUserName
             fromUser = recMsg.ToUserName
-            content = interpreter(bytes.decode(recMsg.Content))
+            content = interpreter(toUser, bytes.decode(recMsg.Content))
             replyMsg = reply.TextMsg(toUser, fromUser, content)
             return PlainTextResponse(replyMsg.send())
         else:
@@ -42,6 +42,9 @@ async def configHandler(rq: Request):
     parse(str(webStr))
     return PlainTextResponse("parse success")
 
+@app.post("/test")
+async def gotest(rq: Request):
+    webData = await rq.body()
 # for debug
 if __name__ == '__main__':
     uvicorn.run(app)

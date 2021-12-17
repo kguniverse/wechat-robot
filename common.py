@@ -22,12 +22,14 @@ class stepNode:
             stepMap.update({stepName: newNode})
         self.default = newNode
         pass
+
     def addGoto(self, stepName: str):
         newNode = stepMap.get(stepName, None)
         if newNode is None:
             newNode = stepNode(stepName)
             stepMap.update({stepName: newNode})
         self.goto = newNode
+        pass
 
 # a map data structure from key value to detail message
 class dictionary:

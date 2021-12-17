@@ -42,9 +42,13 @@ async def configHandler(rq: Request):
     parse(str(webStr))
     return PlainTextResponse("parse success")
 
+#test interface
 @app.post("/test")
 async def gotest(rq: Request):
-    webData = await rq.body()
+    webData:str = await rq.body()
+    replyMsg = interpreter("123", bytes.decode(webData.Content))
+    return PlainTextResponse(replyMsg)
+
 # for debug
 if __name__ == '__main__':
     uvicorn.run(app)

@@ -11,3 +11,6 @@ end
 hello
 欢迎访问程序设计实践课程机器人
 end
+notunderstand
+不知道您在说什么
+end

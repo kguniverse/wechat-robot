@@ -29,6 +29,7 @@ class stepNode:
             stepMap.update({stepName: newNode})
         self.goto = newNode
 
+# a map data structure from key value to detail message
 class dictionary:
     def __init__(self):
         self.dic = {}

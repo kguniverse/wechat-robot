@@ -50,7 +50,7 @@ def stepGoto(s: str, loc: int, tokens: ParseResults):
     pass
     
 
-
+#BNF (grammar parser)
 stepName = Combine("Proc:" + Word(alphas))
 branchInput = Word(alphas)
 branch_detail = ("BRANCH" + branchInput.setResultsName("condition") + stepName.setResultsName("sonName")).setParseAction(stepBranch)
@@ -64,5 +64,6 @@ end = Literal("end") + Literal("step")
 step = begin + OneOrMore(detail) + end
 instruction = OneOrMore(step)
 
+#entry
 def parse(shell: str):
     return instruction.parse_string(shell)

@@ -39,20 +39,18 @@ BRANCH CourseInfo Proc:CourseInfo
 end step
 ```
 
+```
 BNF:
 
-instruction := steps*
+instruction := step*
 
-steps       := begin detail end {validate begin.name == end.name}
+step        := begin detail* end
 
-begin       := "step" stepname {begin.name = stepname.name}
+begin       := "step" stepname
 
-stepname    := [((a~z) + (A~Z))+] "Proc"
+stepname    := "Proc:" + name(only alphnum)
 
-detail      := function branchInput stepname {if stepname doesn't exsist, build one} 
+detail = branch_detail | wait_detail | print_detail | default_detail | goto_detail
 
-end         := "end" stepname {end.name = stepname.name}
-
-function    := \[A~Z]+
-
-branchInput := " string "
+end         := "end step"
+```

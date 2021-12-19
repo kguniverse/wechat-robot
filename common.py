@@ -1,3 +1,6 @@
+# serve as model layer to store data structure
+
+
 stepMap = {}
 
 class stepNode:

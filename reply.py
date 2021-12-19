@@ -1,7 +1,8 @@
+# reply message process
+
 import time
 
 
-# reply message process
 class Msg(object):
     def __init__(self):
         pass

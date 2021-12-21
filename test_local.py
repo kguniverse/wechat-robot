@@ -4,18 +4,14 @@ from spiltWord import *
 import random
 import string
 
-# stepName = Combine("Proc:" + Word(alphas))
-# branchInput = Word(alphas)
-# branch_detail = ("BRANCH" + branchInput.setResultsName("condition") + stepName.setResultsName("sonName")).setParseAction(stepBranch)
-# wait_detail = ("WAIT" + Word(nums).setResultsName("wait_time")).setParseAction(stepWait)
-# print_detail = ("PRINT" + Word(alphanums).setResultsName("print_str")).setParseAction(stepPrint)
-# default_detail = ("DEFAULT" + stepName.setResultsName("sonName")).setParseAction(stepDefault)
-# goto_detail = ("GOTO" + stepName.setResultsName("sonName")).setParseAction(stepGoto)
-# detail = branch_detail | wait_detail | print_detail | default_detail | goto_detail
-# begin = ("step" + stepName.setResultsName("fatherName")).setParseAction(stepCheck)
-# end = Literal("end") + Literal("step")
-# step = begin + OneOrMore(detail) + end
-# instruction = OneOrMore(step)
+# BNF:
+# instruction := step*
+# step        := begin detail* end
+# begin       := "step" stepname
+# stepname    := "Proc:" + name(only alphnum)
+# detail      := branch_detail | wait_detail | print_detail | default_detail | goto_detail
+# end         := "end step"
+
 def begin():
     salt = "step Proc:" + ''.join(random.sample(string.ascii_letters, 8)) + "\n"
     return salt
@@ -40,9 +36,10 @@ def inst():
         res += step()
     return res
 
-
+# for parser test
 class test_parser:
     def __init__(self):
+
 #         self.shell: str = """
 # step Proc:welcome
 # PRINT hello
@@ -55,6 +52,7 @@ class test_parser:
 # BRANCH CourseInfo Proc:CourseInfo
 # end step
 # """ 
+
         self.shell = inst()
         pass
     
@@ -63,9 +61,11 @@ class test_parser:
         shelling = parser.parse(self.shell)
         print(shelling)
 
+
+# for interpreter test
 class test_split:
     def __init__(self):
-        self.word = "老子的作业是什么"
+        self.word = "我的作业是什么"
     
     def test(self):
         return spiltWord(self.word)

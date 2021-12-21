@@ -33,7 +33,7 @@ fastapi接收信息解码后转换为包括来源方和内容等信息的结构�
 
 ## 测试结果
 
-### 压力测试
+### 压力测试(远程测试remote)
 
 书写了一个随机生成带有关键词的字符串作为输出内容，另一随机字符串作为用户名代码，多线程并发发送post请求的一个python脚本(test_remote.py), 设置的参数为10个并发线程，每个线程500个发送任务，每次发送间隔0.1s。
 
@@ -42,6 +42,48 @@ fastapi接收信息解码后转换为包括来源方和内容等信息的结构�
 ![](/asset/docs/pressuretest.png)
 
 
-### 测试桩
+### 测试桩(本机测试local)
 
 这个部分一开始的时候忘记考虑了，但是在我翻阅我的debug日志时候发现我是有写符合老师要求的测试桩的程序的(test_local.py)，这是我用于测试parser时候打的测试桩，把parser模块剥离出来进行单独测试。
+
+#### class test-parser parser测试桩
+
+该类中根据已经定义好的BNF，自顶向下递归生成满足检测要求的测试脚本。
+
+``` python
+# BNF:
+# instruction := step*
+# step        := begin detail* end
+# begin       := "step" stepname
+# stepname    := "Proc:" + name(only alphnum)
+# detail      := branch_detail | wait_detail | print_detail | default_detail | goto_detail
+# end         := "end step"
+
+def begin():
+    salt = "step Proc:" + ''.join(random.sample(string.ascii_letters, 8)) + "\n"
+    return salt
+
+def end():
+    return "end step\n"
+
+def detail():
+    return "PRINT hello\n"
+
+def step():
+    t = random.randint(1, 5)
+    det = ""
+    for i in range(t):
+        det += detail()
+    return begin() + det + end() + "\n"
+
+def inst():
+    t = random.randint(1, 5)
+    res = ""
+    for i in range(t):
+        res += step()
+    return res
+```
+
+#### class test_split 分词模块测试桩
+
+这个模块测试的是interpreter中的分词系统，随机生成一个带有目标关键词的语言，传入后经过二次映射(translation.txt, dict.txt)传出应该返回的内容，并将其打印出来

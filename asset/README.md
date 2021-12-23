@@ -2,7 +2,7 @@
 
 ## 整体逻辑实现
 
-![](/asset/docs/framework.png)
+![](docs/framework.png)
 
 程序整体分为两个接口（测试接口除外），包括配置接口和用户交互接口（http协议）
 
@@ -39,7 +39,7 @@ fastapi接收信息解码后转换为包括来源方和内容等信息的结构�
 
 最后的结果如下，QPS可以达到71W（这个是理论最优值，因为没有跑内部的interpreter逻辑）
 
-![](/asset/docs/pressuretest.png)
+![](docs/pressuretest.png)
 
 
 ### 测试桩(本机测试local)
